@@ -104,7 +104,7 @@ Or, set **`config_path3d = 'Full path of the 3D project configuration file'`**.
 ffmpeg -i videoname.mp4 -vframes 20 camera-1-%03d.jpg
 ```
 
-### B. Guidelines for Capturing Images 🧐
+### B. Guidelines for Capturing Calibration Images 🧐
 
 - Consistently maintain the checkerboard’s orientation and limit rotation to under 30 degrees.
 - Vary distances, ensuring every image view (corners and center) is covered at each distance.
@@ -113,7 +113,7 @@ ffmpeg -i videoname.mp4 -vframes 20 camera-1-%03d.jpg
 
 ### C. Calibration Iterative Process 🔄
 
-Calibration, an iterative process, requires accurate grid pattern detection from calibration images, managed through **`deeplabcut.calibrate_cameras(config_path)`**. The grid pattern could be of various sizes, such as 8x8 or 5x5. Here, an 8x6 grid pattern is utilized to detect the checkerboard’s internal corners.
+Calibration requires accurate grid pattern detection from calibration images, managed through **`deeplabcut.calibrate_cameras(config_path)`**. The grid pattern could be of various sizes, such as 8x8 or 5x5. Here, an 8x6 grid pattern is utilized to detect the checkerboard’s internal corners.
 
 <p align="center">
 <img src="https://images.squarespace-cdn.com/content/v1/57f6d51c9f74566f55ecf271/1559776966423-RATM6ZQT8JXHYAN768F6/ke17ZwdGBToddI8pDm48kKmw982fUOZVIQXHUCR1F55Zw-zPPgdn4jUwVcJE1ZvWQUxwkmyExglNqGp0IvTJZUJFbgE-7XRK3dMEBRBhUpw5XnxLBmEFHJGf_0qFdDpmIncOw4kq9OpCHNTYqzGO-E1YJr-Thht9Tdog4YtCwrE/right02_corner.jpg?format=500w" height="220">
@@ -124,7 +124,7 @@ Faulty corner detections or incorrect corner orders between the images from came
 
 1. Begin by placing your images into the **`calibration_images`** directory.
 
-**CRITICAL!** Adjust the **`config.yaml`** file to adjust camera names, and avoid altering them post-setting!
+**CRITICAL!** Manipulate the **`config.yaml`** file to adjust camera names, and avoid altering them post-setting!
 
 Run the command:
 
@@ -155,14 +155,14 @@ To do this just type:
 deeplabcut.check_undistortion(config_path3d, cbrow=8, cbcol=6)
 ```
 
-Each of your calibration images gets undistorted and saved under the **`undistortion`** directory. You’ll also get a plot that pairs undistorted camera images with its undistorted corner points overlay. Make sure to visually inspect these images, verifying the integrity of the undistortion process.
+Each of your calibration images gets undistorted and saved under the **`undistortion`** directory. You’ll also get a plot that pairs undistorted camera images with its undistorted corner points overlay. Make sure to visually inspect these images, verifying the accuracy of the undistortion process.
 
 All the undistorted corner points from your calibration images will be triangulated and presented in a plot for you to check for any undistortion errors. If you find discrepancies or inaccuracies, revise those calibration images, redo the calibration, and repeat this step!
 
 
 ### **(4) Triangulation: Take your Data from 2D to 3D 🚀🌐**
 
-If the undistortion is accurate, we can triangulate the pose from our two cameras and get the 3D DeepLabCut coordinates! 
+If the undistortion is accurate, you can triangulate the pose from the two cameras and get the 3D DeepLabCut coordinates! 
 
 ### CRITICAL Notes 🚨
 
@@ -179,7 +179,7 @@ Do you need software to record your vids? [Here's our go-to](https://github.com/
 - **Consistent Body Part Names**: Make sure to use the same body part names as in the 2D project’s **`config.yaml`**.
 - **Picking a Snapshot**: Designate the snapshot to use in the 2D config file (default: last training snapshot = `-**1**`).
 - **Naming Your 3D Scorer**: Choose a “scorer 3D” name that it will refer to the project file and feature in future 3D output filenames.
-- **Skeleton, Assemble**: You might want to define a “skeleton” too. It just connects points during plotting. You decide which points get “skeletonized”. Others will simply be plotted into the 3D space.
+- **Skeleton, Assemble**: You might want to define a “skeleton” too. It connects points during plotting. You decide which points get “skeletonized”. Others will simply be plotted into the 3D space.
 
 Here is how the `config.yaml` looks with some example inputs:
 
@@ -212,7 +212,7 @@ The triangulated file is now saved in the same directory where your video files 
 
 ### (5) Visualize your 3D DeepLabCut Videos 👀
 
-To visualize both the 2D videos with tracked points plut the pose in 3D, the user can create a 3D video for selected frames (these are large files, so we advise just looking at a subset of frames).
+To visualize both the 2D videos with tracked points plus the pose in 3D, the user can create a 3D video for selected frames (these are large files, so we advise just looking at a subset of frames).
 
 Specify the configuration file `config_path3d`, path of the triangulated file folder `['triangulated_file_folder'],` and the start and end frame indices `start=50, end=250` to create a 3D labeled video. It's important to note that the *triangulated_file_folder* should contain the recently generated file, suffixed with **yourDLC_3D_scorername.h5**. 
 
