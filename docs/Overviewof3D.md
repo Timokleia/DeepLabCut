@@ -10,8 +10,8 @@ In this repo we directly support 2-camera based 3D pose estimation. If you want 
 
 **Our code base in this repo assumes:**
 
-A. A. You have 2D videos and have employed a DeepLabCut network for their analysis as described in the [main documentation](overview). 
-    The analysis has used either:
+A. You have 2D videos and have employed a DeepLabCut network for their analysis as described in the [main documentation](UseOverviewGuide.md). 
+    The analysis used either:
         - Multiple, independent networks for each camera (though this is less recommended), or
         - A single network trained across all views (**recommended**! Reference: [Nath*, Mathis* et al., 2019](https://www.biorxiv.org/content/10.1101/476531v1)).
         - Multi-animal 3D analysis is also supported by this code (please see [Lauer et al. 2022](https://doi.org/10.1038/s41592-022-01443-0)).
@@ -36,7 +36,7 @@ Here are other excellent options for you to use that extend DeepLabCut:
 
 ## Jump in with direct DeepLabCut 2-camera support🔥:
 
-- single animal DeepLabCut and multi-animal DeepLabCut (maDLC) projects are supported:
+Single animal DeepLabCut and multi-animal DeepLabCut (maDLC) projects are supported.
 
 <p align="center">
 <img src= "https://images.squarespace-cdn.com/content/v1/57f6d51c9f74566f55ecf271/1560968522350-COKR986AQESF5N1N7QNK/ke17ZwdGBToddI8pDm48kNaO57GzHjWqV-xM6jVvY6ZZw-zPPgdn4jUwVcJE1ZvWQUxwkmyExglNqGp0IvTJZUJFbgE-7XRK3dMEBRBhUpyR5k0u27ivMv3az5DOhUvLuYQefjfUWYPEDVexVC_mSas4X78tjQKn3yE00zHvnK8/3D_maousLarger.gif?format=750w" height="200">
@@ -59,7 +59,7 @@ This function requires the user to input `'ProjectName'` (the name of the projec
 To start a 3D project type the following in ipython 🐍:
 
 ```python
-deeplabcut.create_new_project_3d('ProjectName','NameofLabeler',num_cameras = 2)
+deeplabcut.create_new_project_3d('ProjectName','NameofExperimenter',num_cameras = 2)
 ```
 Currently, DeepLabCut supports triangulation using 2 cameras, but will expand to more than 2 cameras in a future version.
 
@@ -132,7 +132,7 @@ Run the command:
 deeplabcut.calibrate_cameras(config_path3d, cbrow=8, cbcol=6, calibrate=False, alpha=0.9)
 ```
 
-**NOTE**: Make sure to define your checkerboard’s rows (**`cbrow`**) and columns (**`cbcol`**). Initially, set **`calibrate`** to **`False`** to enable the removal of faulty images. The visual inspection of the output is important to verify detected corners and select image pairs with accurate corner detection. If **`alpha`**=0 (scaling parameter), an undistorted image is returned with a minimum of unwanted pixels, even possibly eliminating some at the image corners. An ** `alpha`** of 1 maintains all pixels but may introduce some additional black images.
+**NOTE**: Make sure to define your checkerboard’s rows (**`cbrow`**) and columns (**`cbcol`**). Initially, set **`calibrate`** to **`False`** to enable the removal of faulty images. The visual inspection of the output is important to verify detected corners and select image pairs with accurate corner detection. If **`alpha`**=0 (scaling parameter), an undistorted image is returned with a minimum of unwanted pixels, even possibly eliminating some at the image corners. An **`alpha`** of 1 maintains all pixels but may introduce some additional black images.
 
 After careful selection of image sets—remember, only keep the pairs where the corners and their order are spot on. —cameras are ready for calibration.
 
@@ -159,7 +159,6 @@ Each of your calibration images gets undistorted and saved under the **`undistor
 
 All the undistorted corner points from your calibration images will be triangulated and presented in a plot for you to check for any undistortion errors. If you find discrepancies or inaccuracies, revise those calibration images, redo the calibration, and repeat this step!
 
----
 
 ### **(4) Triangulation: Take your Data from 2D to 3D 🚀🌐**
 
@@ -184,7 +183,9 @@ Do you need software to record your vids? [Here's our go-to](https://github.com/
 
 Here is how the `config.yaml` looks with some example inputs:
 
-####TOADDIMAGE
+<p align="center">
+<img src=https://github.com/Timokleia/DeepLabCut/blob/3d_changes/docs/images/carbon-4.png>
+</p>
 
 ### CRITICAL Notes 🚨
 
@@ -199,8 +200,9 @@ deeplabcut.triangulate(config_path3d, '/yourcomputer/fullpath/videofolder', filt
 
 💡 **TIP**: Here are all the parameters you can pass:
 
-
-###TOADDIMAGE
+<p align="center">
+<img src=https://github.com/Timokleia/DeepLabCut/blob/3d_changes/docs/images/carbon-7.png>
+</p>
 
 The triangulated file is now saved in the same directory where your video files are located (or the folder you've designated as its destination)! It's all set for any future analysis. This step can be run at anytime as you collect new videos, and easily added to your automated analysis pipeline, i.e. such as ** replacing**`deeplabcut.triangulate(config_path3d, video_path)` with `deeplabcut.analyze_videos` (as if it’s not analyzed in 2D already, this function will take care of it 😉).
 
@@ -226,11 +228,13 @@ Helpful Tip 🌟: (Discover more parameters below) You can manipulate the axis o
 <img src="https://images.squarespace-cdn.com/content/v1/57f6d51c9f74566f55ecf271/1559864026106-B6XQHUDUA8VB6F0FNVBA/ke17ZwdGBToddI8pDm48kKmw982fUOZVIQXHUCR1F55Zw-zPPgdn4jUwVcJE1ZvWQUxwkmyExglNqGp0IvTJZUJFbgE-7XRK3dMEBRBhUpx7krGdD6VO1HGZR3BdeCbrijc_yIxzfnirMo-szZRSL5-VIQGAVcQr6HuuQP1evvE/checkerboard_3d.png?format=750w" width="45%">
 </p>
 
-The 'view' parameter adjusts the axes' elevation and azimuth, with default values set to [113, 270]. Users are encouraged to experiment to determine their preferred viewpoint. Upon execution of the function, the video is generated from .png files stored in a temporary directory. Users can preview the first image immediately upon command execution. If the view requires adjustment, hit 'CNTRL+C' to halt the process, modify the values, and re-initiate the command.
+The `view` parameter adjusts the axes' elevation and azimuth, with default values set to [113, 270]. Users are encouraged to experiment to determine their preferred viewpoint. Upon execution of the function, the video is generated from .png files stored in a temporary directory. Users can preview the first image immediately upon command execution. If the view requires adjustment, hit 'CNTRL+C' to halt the process, modify the values, and re-initiate the command.
 
 **Other optional parameters include:**
 
-###TOADDIMAHGE
+<p align="center">
+<img src=https://github.com/Timokleia/DeepLabCut/blob/3d_changes/docs/images/carbon-8.png>
+</p>
 
 ### If you use this code:
 
