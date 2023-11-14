@@ -45,15 +45,32 @@ corners: Saves patterns detected in calibration images, important for camera cal
 - **corners:**  As a part of camera calibration, the checkerboard pattern is detected in the calibration images and these patterns will be stored in this directory. Each row of the checkerboard grid is marked with a unique color.
 - **undistortion**: Used for checking calibration accuracy. It has images and points that have been corrected for any distortion.
 
-**Tips for Calibration Images**:
-- Use a large checkerboard with at least 8x6 squares.
-- Take at least 70 pairs of images covering various distances and angles.
-- Maintain consistent orientation of the checkerboard.
-- Ensure the images cover all parts of the camera's view.
-
 ### Calibration and Triangulation
 
-After setting up your project, the next steps involve calibrating the cameras and then using triangulation to analyze the 3D movements. This involves using the calibration images to ensure that the cameras are accurately capturing the 3D space.
+Camera calibration is crucial for accurate 3D pose estimation in DeepLabCut. This process involves using images of a checkerboard taken from different angles and distances to help the system understand how the cameras see the 3D space.
 
+**Steps for Camera Calibration:**
 
+1. Preparing the Checkerboard
+- Use a printed checkerboard for calibration. You can find examples here https://markhedleyjones.com/projects/calibration-checkerboard-collection.
+- Mount the checkerboard on a flat, hard surface to keep it stable.
+- Keep the orientation of the checkerboard consistent and avoid rotating it more than 30 degrees.
+- Cover different distances and make sure to capture all parts of the camera’s view.
+- Aim to take 30-70 pairs of images. Some images may be discarded later if the checkerboard corners are not detected correctly.
+Using Videos for Calibration:
+If you prefer, you can record a video moving the checkerboard around and then extract frames from it as .jpg images.
+Use this command to convert video to images (modify as needed):
+```python
+ffmpeg -i videoname.mp4 -vframes 20 camera-1-%03d.jpg
+```
 
+2. Processing the Images:
+- Place your images in the calibration_images directory of your project.
+- Run the deeplabcut.calibrate_cameras function to start the calibration process. This function will try to detect the checkerboard pattern in your images.
+```python
+deeplabcut.calibrate_cameras(config_path3d, cbrow=8, cbcol=6, calibrate=False, alpha=0.9)
+```
+- If the corners are not detected correctly in some images, you need to remove those images from the calibration_images folder.
+Configuring and Running Calibration:
+Edit the config.yaml file to set the camera names and ensure they remain consistent.
+Use the following command to calibrate the cameras (modify cbrow and cbcol based on your checkerboard):
