@@ -42,6 +42,7 @@ Your project will have several subdirectories for different purposes:
 - **calibration_images**: Stores images used to calibrate the cameras. These are images of a checkerboard taken from different angles and distances by both cameras.
 - **camera_matrix**: Contains camera parameters that help in transforming 3D coordinates to 2D image coordinates.
 corners: Saves patterns detected in calibration images, important for camera calibration.
+- **corners:**  As a part of camera calibration, the checkerboard pattern is detected in the calibration images and these patterns will be stored in this directory. Each row of the checkerboard grid is marked with a unique color.
 - **undistortion**: Used for checking calibration accuracy. It has images and points that have been corrected for any distortion.
 
 **Tips for Calibration Images**:
@@ -54,5 +55,5 @@ corners: Saves patterns detected in calibration images, important for camera cal
 
 After setting up your project, the next steps involve calibrating the cameras and then using triangulation to analyze the 3D movements. This involves using the calibration images to ensure that the cameras are accurately capturing the 3D space.
 
-This summary provides an overview of how to start a 3D DeepLabCut project using two cameras, focusing on the initial steps and the purpose of different components in the setup. If you have any more specific questions or need further details, feel free to ask!
+
 
