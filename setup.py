@@ -17,7 +17,7 @@ with open("README.md", encoding="utf-8", errors="replace") as fh:
 
 setuptools.setup(
     name="deeplabcut",
-    version="2.3.7",
+    version="2.3.8",
     author="A. & M. Mathis Labs",
     author_email="alexander@deeplabcut.org",
     description="Markerless pose-estimation of user-defined features with deep learning",
@@ -51,12 +51,14 @@ setuptools.setup(
         "gui": [
             "pyside6<6.3.2",
             "qdarkstyle==3.1",
-            "napari-deeplabcut>=0.2",
+            "napari-deeplabcut>=0.2.1.2",
         ],
         "openvino": ["openvino-dev==2022.1.0"],
         "docs": ["numpydoc"],
-        "tf": ["tensorflow>=2.0,<=2.10"],  # Last supported TF version on Windows Native is 2.10
-        "apple_mchips": ["tensorflow-macos<2.13.0","tensorflow-metal"],
+        "tf": [
+            "tensorflow>=2.0,<=2.10"
+        ],  # Last supported TF version on Windows Native is 2.10
+        "apple_mchips": ["tensorflow-macos<2.13.0", "tensorflow-metal"],
         "modelzoo": ["huggingface_hub"],
     },
     scripts=["deeplabcut/pose_estimation_tensorflow/models/pretrained/download.sh"],
