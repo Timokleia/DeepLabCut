@@ -38,8 +38,18 @@ Thus, this function requires the user to input the name of the project, the name
 
 Optional arguments specify the working directory, where the project directory will be created, and if the user wants to copy the videos (to the project directory). If the optional argument working\_directory is unspecified, the project directory is created in the current working directory, and if copy\_videos is unspecified symbolic links for the videos are created in the videos directory. Each symbolic link creates a reference to a video and thus eliminates the need to copy the entire video to the video directory (if the videos remain at the original location).
 
+A significant feature is the `engine` parameter, allowing users to choose between TensorFlow and PyTorch for their project's machine learning framework. This selection influences the setup for model training and subsequent analyses. By default, if the `engine` parameter is not explicitly set, the project will utilize TensorFlow.
+
+```{hint}
+💡 **Hint**: To switch the machine learning framework after the project has been created, edit the **`config.yaml`** file within the project directory:
+
+1. Locate the **`engine`** parameter.
+2. Change its value to either **`'tensorflow'`** or **`'pytorch'`**.
+3. Save the changes and reload the project in DeepLabCut or restart the GUI.
+```
+
 ```python
-deeplabcut.create_new_project('Name of the project', 'Name of the experimenter', ['Full path of video 1', 'Full path of video2', 'Full path of video3'], working_directory='Full path of the working directory', copy_videos=True/False, multianimal=True/False)
+deeplabcut.create_new_project('Name of the project', 'Name of the experimenter', ['Full path of video 1', 'Full path of video2', 'Full path of video3'], working_directory='Full path of the working directory', copy_videos=True/False, multianimal=True/False, engine='tensorflow'/'pytorch')
 ```
 
 **Important path formatting note**
@@ -237,6 +247,13 @@ The differences of the loaders are as follows:
 
 Alternatively, you can set the loader (as well as other training parameters) in the **pose_cfg.yaml** file of the model that you want to train. Note, to get details on the options, look at the default file: [**pose_cfg.yaml**](https://github.com/DeepLabCut/DeepLabCut/blob/master/deeplabcut/pose_cfg.yaml).
 
+**NET TYPE SELECTION:** During the **`create_training_dataset`** step, it is essential to select the appropriate neural network architecture, referred to as **`net_type`**. This selection is crucial as it dictates the backbone structure of your model, which can significantly impact performance and training speed. The **`net_type`** should align with the machine learning engine you've chosen for your project, TensorFlow or PyTorch, each offering a distinct set of pre-trained models.
+
+- **For TensorFlow**: `'resnet_50'`, `'resnet_101'`, `'resnet_152'`, `'mobilenet_v2_1.0'`, `'mobilenet_v2_0.75'`, `'mobilenet_v2_0.5'`, `'mobilenet_v2_0.35'`, `'efficientnet-b0'`, `'efficientnet-b3'`, `'efficientnet-b6'`
+- **For PyTorch**: `'dekr_w18'`, `'dekr_w32'`, `'dekr_w48'`, `'dlcrnet_stride16_ms5'`, `'dlcrnet_stride32_ms5'`, `'hrnet_w18'`, `'hrnet_w32'`, `'hrnet_w48'`, `'resnet_101'`, `'resnet_50'`, `'tokenpose_base'`, `'top_down_hrnet_w18'`, `'top_down_hrnet_w32'`, `'top_down_hrnet_w48'`, `'top_down_resnet_101'`, `'top_down_resnet_50'`
+
+When calling **`deeplabcut.create_training_dataset`**, pass the **`net_type`** argument corresponding to the selected framework.
+
 **MODEL COMPARISON:** You can also test several models by creating the same test/train split for different networks. You can easily do this in the Project Manager GUI, or use the function ``deeplabcut.create_training_model_comparison``.
 
 Please also consult the following page on selecting models: https://deeplabcut.github.io/DeepLabCut/docs/recipes/nn.html#what-neural-network-should-i-use-trade-offs-speed-performance-and-considerations
@@ -287,6 +304,26 @@ the variable ``init_weights`` in the **pose_cfg.yaml** file under the *train* su
 The variables ``display_iters`` and ``save_iters`` in the **pose_cfg.yaml** file allows the user to alter how often the loss is displayed and how often the weights are stored.
 
 **maDeepLabCut CRITICAL POINT:** For multi-animal projects we are using not only different and new output layers, but also new data augmentation, optimization, learning rates, and batch training defaults. Thus, please use a lower ``save_iters`` and ``maxiters``. I.e. we suggest saving every 10K-15K iterations, and only training until 50K-100K iterations. We recommend you look closely at the loss to not overfit on your data. The bonus, training time is much less!!!
+
+#### Training with PyTorch in DeepLabCut 3.0
+
+When training models using PyTorch in DeepLabCut 3.0, the concept of iterations is replaced by epochs. This adjustment reflects a key difference in how training progress is measured.
+
+An **epoch** represents one full pass through the entire training dataset, ensuring each training image is seen exactly once by the model. As a result, training configuration and progress tracking in PyTorch are inherently tied to the dataset's structure and the selected batch size.
+
+For instance, with a dataset of 64 images:
+
+- Using a batch size of **1**, each epoch comprises **64 iterations**.
+- A batch size of **2** results in **32 iterations per epoch**.
+- A batch size of **4** leads to **16 iterations per epoch**.
+
+In PyTorch, instead of specifying the number of iterations (`maxiters` as in TensorFlow), you will define the training duration through the `maxepochs` parameter:
+
+```python
+# Example command for PyTorch training in DeepLabCut
+deeplabcut.train_network(config_path, maxepochs=100)
+```
+Be mindful that the total exposure of your network to the training data remains consistent, whether you’re counting in iterations or epochs.
 
 #### API Docs
 ````{admonition} Click the button to see API Docs
