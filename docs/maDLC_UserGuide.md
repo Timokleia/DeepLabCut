@@ -21,7 +21,18 @@ Thus, you should always label, train, and evaluate the pose estimation performan
 
 ## Install:
 
-**Quick start:** If you are using DeepLabCut on the cloud, or otherwise cannot use the GUIs and you should install with: `pip install 'deeplabcut[tf]'`; if you need GUI support, please use: `pip install 'deeplabcut[tf,gui]'`. On newer Apple computers (with an M1/M2 chip), use `pip install 'deeplabcut[apple_mchips]'` or `pip install 'deeplabcut[apple_mchips,gui]'` instead.
+**Quick start:** DeepLabCut supports both TensorFlow and PyTorch frameworks. Your choice of installation depends on the desired backend:
+
+#### For TensorFlow:
+- Without GUI support: `pip install 'deeplabcut[tf]'`
+- With GUI support: `pip install 'deeplabcut[tf,gui]'`
+
+#### For PyTorch:
+- Without GUI support: `pip install 'deeplabcut[torch]'`
+- With GUI support: `pip install 'deeplabcut[torch,gui]'`
+
+#### For Apple Silicon (M1/M2 chips):
+- `pip install 'deeplabcut[apple_mchips]'` or with GUI `pip install 'deeplabcut[apple_mchips,gui]'`
 
 IF you want to use the bleeding edge version to make edits to the code, see here on how to install it and test it (https://deeplabcut.github.io/DeepLabCut/docs/recipes/installTips.html#how-to-use-the-latest-updates-directly-from-github).
 
@@ -50,8 +61,8 @@ for every function there is a associated help document that can be viewed by add
 ### Create a New Project:
 
 ```python
-deeplabcut.create_new_project('ProjectName','YourName', ['/usr/FullPath/OfVideo1.avi', '/usr/FullPath/OfVideo2.avi', '/usr/FullPath/OfVideo1.avi'],
-              copy_videos=True, multianimal=True)
+deeplabcut.create_new_project('ProjectName', 'YourName', ['/usr/FullPath/OfVideo1.avi', '/usr/FullPath/OfVideo2.avi', '/usr/FullPath/OfVideo3.avi'],
+              copy_videos=True, multianimal=True, engine='tensorflow'/'pytorch')
 ```
 
 Tip: if you want to place the project folder somewhere specific, please also pass : ``working_directory = 'FullPathOftheworkingDirectory'``
@@ -292,6 +303,12 @@ In addition, one can specify a crop sampling strategy: crop centers can either b
 As a reminder, cropping images into smaller patches is a form of data augmentation that simultaneously
 allows the use of batch processing even on small GPUs that could not otherwise accommodate larger images + larger batchsizes (this usually increases performance and decreasing training time).
 
+**NET TYPE SELECTION:** During the **`create_training_dataset`** step, it is essential to select the appropriate neural network architecture, referred to as **`net_type`**. This selection is crucial as it dictates the backbone structure of your model, which can significantly impact performance and training speed. The **`net_type`** should align with the machine learning engine you've chosen for your project, TensorFlow or PyTorch, each offering a distinct set of pre-trained models.
+
+- For TensorFlow: `'resnet_50'`, `'resnet_101'`, `'resnet_152'`, `'mobilenet_v2_1.0'`, `'mobilenet_v2_0.75'`, `'mobilenet_v2_0.5'`, `'mobilenet_v2_0.35'`, `'efficientnet-b0'`, `'efficientnet-b3'`, `'efficientnet-b6'`
+- For PyTorch: `'dekr_w18'`, `'dekr_w32'`, `'dekr_w48'`, `'dlcrnet_stride16_ms5'`, `'dlcrnet_stride32_ms5'`, `'hrnet_w18'`, `'hrnet_w32'`, `'hrnet_w48'`, `'resnet_101'`, `'resnet_50'`, `'tokenpose_base'`, `'top_down_hrnet_w18'`, `'top_down_hrnet_w32'`, `'top_down_hrnet_w48'`, `'top_down_resnet_101'`, `'top_down_resnet_50'`
+
+When calling **`deeplabcut.create_training_dataset`**, pass the **`net_type`** argument corresponding to the selected framework.
 
 ### Train The Network:
 
@@ -320,6 +337,15 @@ The variables ``display_iters`` and ``save_iters`` in the **pose_cfg.yaml** file
 
 **maDeepLabCut CRITICAL POINT:** For multi-animal projects we are using not only different and new output layers, but also new data augmentation, optimization, learning rates, and batch training defaults. Thus, please use a lower ``save_iters`` and ``maxiters``. I.e. we suggest saving every 10K-15K iterations, and only training until 50K-100K iterations. We recommend you look closely at the loss to not overfit on your data. The bonus, training time is much less!!!
 
+**Major Changes for PyTorch**:From iterations to epochs
+With PyTorch in DeepLabCut 3.0, training is defined by epochs rather than iterations. An epoch constitutes a full cycle through the training dataset, ensuring each image is seen exactly once.
+Thus, if your dataset includes 64 images, and you're using a batch size of 1, an epoch equates to 64 iterations. This scales down with larger batch sizes, such that a batch size of 2 results in 32 iterations per epoch, and so on.
+
+When training with PyTorch, specify the number of epochs using the maxepochs parameter:
+```python
+deeplabcut.train_network(config_path, maxepochs=100)
+```
+
 **Parameters:**
 ```
 config : string
@@ -339,13 +365,20 @@ See: https://github.com/DeepLabCut/DeepLabCut/issues/8#issuecomment-387404835
 
 autotune: property of TensorFlow, somehow faster if 'false' (as Eldar found out, see https://github.com/tensorflow/tensorflow/issues/13317). Default: False
 
-displayiters: this variable is actually set in pose_config.yaml. However, you can overwrite it with this hack. Don't use this regularly, just if you are too lazy to dig out
-the pose_config.yaml file for the corresponding project. If None, the value from there is used, otherwise it is overwritten! Default: None
+displayiters: this variable is actually set in pose_config.yaml. However, you can overwrite it with this hack. Don't use this regularly, just if you are too lazy to dig out the pose_config.yaml file for the corresponding project. If None, the value from there is used, otherwise it is overwritten! Default: None
 
-saveiters: this variable is actually set in pose_config.yaml. However, you can overwrite it with this hack. Don't use this regularly, just if you are too lazy to dig out
-the pose_config.yaml file for the corresponding project. If None, the value from there is used, otherwise it is overwritten! Default: None
+saveiters: this variable is actually set in pose_config.yaml. However, you can overwrite it with this hack. Don't use this regularly, just if you are too lazy to dig out the pose_config.yaml file for the corresponding project. If None, the value from there is used, otherwise it is overwritten! Default: None
 
 maxiters: This sets how many iterations to train. This variable is set in pose_config.yaml. However, you can overwrite it with this. If None, the value from there is used, otherwise it is overwritten! Default: None
+
+pytorch-specific parameters:
+
+- maxepochs: int, optional  
+  specifies the total number of epochs for training, where an epoch is a complete pass through the training dataset. replaces the         `maxiters` parameter used in TensorFlow configurations. set in pose_config.yaml but can be overridden. default: None
+
+- save_epochs: int, optional  
+  determines how often epochs are saved, replacing the `saveiters` parameter for TensorFlow. this setting controls the frequency of       model saving during the training process. set in pose_config.yaml but can be overridden default: None
+
 ```
 
 ### Evaluate the Trained Network:
