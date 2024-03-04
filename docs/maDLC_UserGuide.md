@@ -373,11 +373,11 @@ maxiters: This sets how many iterations to train. This variable is set in pose_c
 
 pytorch-specific parameters:
 
-- maxepochs: int, optional  
-  specifies the total number of epochs for training, where an epoch is a complete pass through the training dataset. replaces the         `maxiters` parameter used in TensorFlow configurations. set in pose_config.yaml but can be overridden. default: None
+maxepochs: this variable is actually set in pose_config.yaml. However, you can overwrite it with this hack.
+specifies the total number of epochs for training, where an epoch is a complete pass through the training dataset. replaces the `maxiters` parameter used in TensorFlow configurations. Default: None
 
-- save_epochs: int, optional  
-  determines how often epochs are saved, replacing the `saveiters` parameter for TensorFlow. this setting controls the frequency of       model saving during the training process. set in pose_config.yaml but can be overridden default: None
+save_epochs: this variable is actually set in pose_config.yaml. However, you can overwrite it with this hack. 
+determines how often epochs are saved, replacing the `saveiters` parameter for TensorFlow. this setting controls the frequency of model saving during the training process. Default: None
 
 ```
 
