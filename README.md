@@ -222,7 +222,7 @@ VERSION 1.0: The initial, Nature Neuroscience version of [DeepLabCut](https://ww
 :purple_heart: We support multi-animal re-identification, see [Lauer et al 2022](https://www.nature.com/articles/s41592-022-01443-0).
 
 :purple_heart: We have a **real-time** package available! http://DLClive.deeplabcut.org
-
+- March 2024: DeepLabCut now supports PyTorch! Explore new modeling possibilities in our latest update.
 - January 2024: Our original paper ['DeepLabCut: markerless pose estimation of user-defined body parts with deep learning'](https://www.nature.com/articles/s41593-018-0209-y) in Nature Neuroscience has surpassed 3,000 Google Scholar citations! 
 - December 2023: DeepLabCut hit 600,000 downloads!
 - October 2023: DeepLabCut celebrates a milestone with 4,000 🌟 in Github!
