@@ -168,7 +168,18 @@ This package includes graphical user interfaces to label your data, and take you
 VERSION 1.0: The initial, Nature Neuroscience version of [DeepLabCut](https://www.nature.com/articles/s41593-018-0209-y) can be found in the history of git, or here: https://github.com/DeepLabCut/DeepLabCut/releases/tag/1.11
 
 ## News (and in the news):
+- March 2024: DeepLabCut now supports PyTorch🔦! Explore new modeling possibilities in our latest update.
 
+- January 2024: Our original paper 'DeepLabCut: markerless pose estimation of user-defined body parts with deep learning' in Nature Neuroscience has surpassed 3,000 Google Scholar citations!
+
+- December 2023: DeepLabCut hit 600,000 downloads!
+
+- October 2023: DeepLabCut celebrates a milestone with 4,000 🌟 on GitHub!
+
+- July 2023: The user forum is very active with more than 1k questions and answers: [Image.sc forum](https://forum.image.sc/tag/deeplabcut)
+
+- May 2023: The Model Zoo is now fully integrated into the DeepLabCut GUI, making it easier than ever to access a variety of pre-trained models. Check out the accompanying paper: 'SuperAnimal pretrained pose estimation models for behavioral analysis' by Ye et al.
+  
 - April 2022: multi-animal identification and tracking with DeepLabCut is published in Nature Methods!
 
 - August 2021: 2.2 becomes the new stable release for DeepLabCut.
