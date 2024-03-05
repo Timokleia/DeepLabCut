@@ -325,6 +325,37 @@ deeplabcut.train_network(config_path, maxepochs=100)
 ```
 Be mindful that the total exposure of your network to the training data remains consistent, whether you’re counting in iterations or epochs.
 
+### Training Tracking with Weights & Biases
+
+DeepLabCut now features integration with Weights & Biases (wandb), offering a robust solution for experiment tracking, model optimization, and visualization of results. This addition facilitates the real-time monitoring and analysis of model performance.
+
+#### Setting Up Weights & Biases Logging
+
+To activate Weights & Biases logging within DeepLabCut, include a `logger` configuration in your `config.yaml` file. Here's how to structure this section:
+
+```yaml
+logger:
+  type: 'WandbLogger'
+  project_name: 'my-dlc3-project'
+  run_name: 'dekr-w32-shuffle0'
+```
+
+- **`type`**: This field specifies the logger to be used. For integrating Weights & Biases, set this to `'WandbLogger'`.
+- **`project_name`**: Enter the name of your Weights & Biases project. This organizes all related experiments under one project for easier management.
+- **`run_name`**: Define a unique name for each training run to help differentiate and compare experiments within the project.
+
+#### Initiating a Logging Session
+
+With the `logger` details set in your `config.yaml`, DeepLabCut will automatically start logging to the designated Weights & Biases project and run as soon as you begin training.
+
+1. **Wandb Account**: Ensure you're logged into your Weights & Biases account on your machine. Create an account at [wandb.ai](https://wandb.ai/) if you haven't done so.
+2. **Wandb Library**: Install the Wandb library in your DeepLabCut environment with `pip install wandb`.
+
+#### Viewing Your Results
+
+Upon starting your training with Weights & Biases logging activated, you can monitor the progress, visualize metrics, and see real-time updates directly on your project's Weights & Biases webpage.
+
+
 #### API Docs
 ````{admonition} Click the button to see API Docs
 :class: dropdown
