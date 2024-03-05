@@ -35,6 +35,7 @@ parts:
   - file: docs/recipes/MegaDetectorDLCLive
 - caption: Cookbook
   chapters:
+  - file: docs/pytorch_to_tensorflow.md
   - file: docs/convert_maDLC
   - file: docs/recipes/io
   - file: docs/recipes/nn
