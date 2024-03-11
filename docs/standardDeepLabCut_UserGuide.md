@@ -342,25 +342,38 @@ DeepLabCut now features integration with Weights & Biases (wandb), offering a ro
 
 #### Setting Up Weights & Biases Logging
 
-To activate Weights & Biases logging within DeepLabCut, include a `logger` configuration in your `config.yaml` file. Here's how to structure this section:
+To set up wandb logging:
 
-```yaml
-logger:
-  type: 'WandbLogger'
-  project_name: 'my-dlc3-project'
-  run_name: 'dekr-w32-shuffle0'
-```
+1. **Install Wandb**: Make sure the `wandb` library is installed in your DeepLabCut environment. This can be done via `pip install wandb` or for a more integrated setup, use `pip install deeplabcut[wandb]`.
+2. **Login to Wandb Account**: Verify that you're logged into your wandb account. Use `wandb login` from your command line to log in, or you will be prompted to log in the first time you attempt to train a model.
 
-- **`type`**: This field specifies the logger to be used. For integrating Weights & Biases, set this to `'WandbLogger'`.
-- **`project_name`**: Enter the name of your Weights & Biases project. This organizes all related experiments under one project for easier management.
-- **`run_name`**: Define a unique name for each training run to help differentiate and compare experiments within the project.
+For configuring wandb logging in DeepLabCut, it's crucial to modify the `pytorch_config.yaml` file for your desired shuffle. Alternatively, for a more flexible approach, you can dynamically include the logger in your `train_network` call as follows:
 
-#### Initiating a Logging Session
+```python
+deeplabcut.train_network(
+    config_path,
+    logger={
+        "type": "WandbLogger",
+        "project_name": "my-dlc3-project",
+        "run_name": "dekr-w32-shuffle0",
+    },
+)
 
-With the `logger` details set in your `config.yaml`, DeepLabCut will automatically start logging to the designated Weights & Biases project and run as soon as you begin training.
+This method allows the use of additional parameters available in `wandb.init`. For a comprehensive list of all possible configurations and their explanations, refer to the [Weights & Biases initialization documentation](https://docs.wandb.ai/ref/python/init).
 
-1. **Wandb Account**: Ensure you're logged into your Weights & Biases account on your machine. Create an account at [wandb.ai](https://wandb.ai/) if you haven't done so.
-2. **Wandb Library**: Install the Wandb library in your DeepLabCut environment with `pip install wandb`.
+Additional parameters, such as `group` and `tags`, enable better categorization of your experiments:
+
+```python
+deeplabcut.train_network(
+    config_path,
+    logger={
+        "type": "WandbLogger",
+        "project_name": "my-dlc3-project",
+        "run_name": "dekr-w32-shuffle0",
+        "group": "dekr-w32",
+        "tags": ["arch=dekr", "split=0"],
+    },
+)
 
 #### Viewing Your Results
 
