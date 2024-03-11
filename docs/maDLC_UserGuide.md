@@ -299,6 +299,17 @@ In addition, one can specify a crop sampling strategy: crop centers can either b
 As a reminder, cropping images into smaller patches is a form of data augmentation that simultaneously
 allows the use of batch processing even on small GPUs that could not otherwise accommodate larger images + larger batchsizes (this usually increases performance and decreasing training time).
 
+**TRAINING ENGINE SELECTION:** When creating a training dataset, DeepLabCut allows you to specify the machine learning engine (TensorFlow or PyTorch) that will be used for training. 
+
+You can explicitly set the engine during the dataset creation process. This is achieved by specifying the engine type (either 'tensorflow' or 'pytorch') in the function call. 
+For example:
+
+```python
+deeplabcut.create_training_dataset(config_path, engine='tensorflow')
+```
+```{note}
+If you do not specify an engine when creating the training dataset, DeepLabCut will default to using the engine defined in your project's `config.yaml` file. 
+```
 **NET TYPE SELECTION:** During the **`create_training_dataset`** step, it is essential to select the appropriate neural network architecture, referred to as **`net_type`**. This selection is crucial as it dictates the backbone structure of your model, which can significantly impact performance and training speed. The **`net_type`** should align with the machine learning engine you've chosen for your project, TensorFlow or PyTorch, each offering a distinct set of pre-trained models.
 
 - For TensorFlow: `'resnet_50'`, `'resnet_101'`, `'resnet_152'`, `'mobilenet_v2_1.0'`, `'mobilenet_v2_0.75'`, `'mobilenet_v2_0.5'`, `'mobilenet_v2_0.35'`, `'efficientnet-b0'`, `'efficientnet-b3'`, `'efficientnet-b6'`
