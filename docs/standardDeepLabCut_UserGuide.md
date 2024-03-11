@@ -358,7 +358,7 @@ deeplabcut.train_network(
         "run_name": "dekr-w32-shuffle0",
     },
 )
-
+```
 This method allows the use of additional parameters available in `wandb.init`. For a comprehensive list of all possible configurations and their explanations, refer to the [Weights & Biases initialization documentation](https://docs.wandb.ai/ref/python/init).
 
 Additional parameters, such as `group` and `tags`, enable better categorization of your experiments:
@@ -374,7 +374,7 @@ deeplabcut.train_network(
         "tags": ["arch=dekr", "split=0"],
     },
 )
-
+```
 #### Viewing Your Results
 
 Upon starting your training with Weights & Biases logging activated, you can monitor the progress, visualize metrics, and see real-time updates directly on your project's Weights & Biases webpage.
