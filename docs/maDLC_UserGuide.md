@@ -22,17 +22,13 @@ Thus, you should always label, train, and evaluate the pose estimation performan
 ## Install:
 
 **Quick start:** DeepLabCut supports both TensorFlow and PyTorch frameworks. Your choice of installation depends on the desired backend:
+#### For PyTorch:
+- `pip install 'deeplabcut'`
 
 #### For TensorFlow:
 - Without GUI support: `pip install 'deeplabcut[tf]'`
 - With GUI support: `pip install 'deeplabcut[tf,gui]'`
-
-#### For PyTorch:
-- Without GUI support: `pip install 'deeplabcut[torch]'`
-- With GUI support: `pip install 'deeplabcut[torch,gui]'`
-
-#### For Apple Silicon (M1/M2 chips):
-- `pip install 'deeplabcut[apple_mchips]'` or with GUI `pip install 'deeplabcut[apple_mchips,gui]'`
+- For Apple Silicon (M1/M2 chips): `pip install 'deeplabcut[apple_mchips]'` or with GUI `pip install 'deeplabcut[apple_mchips,gui]'`
 
 IF you want to use the bleeding edge version to make edits to the code, see here on how to install it and test it (https://deeplabcut.github.io/DeepLabCut/docs/recipes/installTips.html#how-to-use-the-latest-updates-directly-from-github).
 
