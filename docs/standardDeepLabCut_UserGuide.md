@@ -38,7 +38,7 @@ Thus, this function requires the user to input the name of the project, the name
 
 Optional arguments specify the working directory, where the project directory will be created, and if the user wants to copy the videos (to the project directory). If the optional argument working\_directory is unspecified, the project directory is created in the current working directory, and if copy\_videos is unspecified symbolic links for the videos are created in the videos directory. Each symbolic link creates a reference to a video and thus eliminates the need to copy the entire video to the video directory (if the videos remain at the original location).
 
-A significant feature is the `engine` parameter, allowing users to choose between TensorFlow and PyTorch for their project's machine learning framework. This selection influences the setup for model training and subsequent analyses. By default, if the `engine` parameter is not explicitly set, the project will utilize TensorFlow.
+A significant feature is the `engine` parameter, allowing users to choose between TensorFlow and PyTorch for their project's machine learning framework. This selection influences the setup for model training and subsequent analyses. By default, if the `engine` parameter is not explicitly set, the project will utilize PyTorch.
 
 ```{hint}
 💡 **Hint**: To switch the machine learning framework after the project has been created, edit the **`config.yaml`** file within the project directory:
