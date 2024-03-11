@@ -247,6 +247,17 @@ The differences of the loaders are as follows:
 
 Alternatively, you can set the loader (as well as other training parameters) in the **pose_cfg.yaml** file of the model that you want to train. Note, to get details on the options, look at the default file: [**pose_cfg.yaml**](https://github.com/DeepLabCut/DeepLabCut/blob/master/deeplabcut/pose_cfg.yaml).
 
+**TRAINING ENGINE SELECTION:** When creating a training dataset, DeepLabCut allows you to specify the machine learning engine (TensorFlow or PyTorch) that will be used for training. 
+
+You can explicitly set the engine during the dataset creation process. This is achieved by specifying the engine type (either 'tensorflow' or 'pytorch') in the function call. 
+For example:
+
+```python
+deeplabcut.create_training_dataset(config_path, engine='tensorflow')
+```
+```{note}
+If you do not specify an engine when creating the training dataset, DeepLabCut will default to using the engine defined in your project's `config.yaml` file. 
+```
 **NET TYPE SELECTION:** During the **`create_training_dataset`** step, it is essential to select the appropriate neural network architecture, referred to as **`net_type`**. This selection is crucial as it dictates the backbone structure of your model, which can significantly impact performance and training speed. The **`net_type`** should align with the machine learning engine you've chosen for your project, TensorFlow or PyTorch, each offering a distinct set of pre-trained models.
 
 - **For TensorFlow**: `'resnet_50'`, `'resnet_101'`, `'resnet_152'`, `'mobilenet_v2_1.0'`, `'mobilenet_v2_0.75'`, `'mobilenet_v2_0.5'`, `'mobilenet_v2_0.35'`, `'efficientnet-b0'`, `'efficientnet-b3'`, `'efficientnet-b6'`
@@ -317,11 +328,11 @@ For instance, with a dataset of 64 images:
 - A batch size of **2** results in **32 iterations per epoch**.
 - A batch size of **4** leads to **16 iterations per epoch**.
 
-In PyTorch, instead of specifying the number of iterations (`maxiters` as in TensorFlow), you will define the training duration through the `maxepochs` parameter:
+In PyTorch, instead of specifying the number of iterations (`maxiters` as in TensorFlow), you will define the training duration through the `max_epochs` parameter:
 
 ```python
 # Example command for PyTorch training in DeepLabCut
-deeplabcut.train_network(config_path, maxepochs=100)
+deeplabcut.train_network(config_path, max_epochs=100)
 ```
 Be mindful that the total exposure of your network to the training data remains consistent, whether you’re counting in iterations or epochs.
 
