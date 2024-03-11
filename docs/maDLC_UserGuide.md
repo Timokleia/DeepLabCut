@@ -337,9 +337,9 @@ The variables ``display_iters`` and ``save_iters`` in the **pose_cfg.yaml** file
 With PyTorch in DeepLabCut 3.0, training is defined by epochs rather than iterations. An epoch constitutes a full cycle through the training dataset, ensuring each image is seen exactly once.
 Thus, if your dataset includes 64 images, and you're using a batch size of 1, an epoch equates to 64 iterations. This scales down with larger batch sizes, such that a batch size of 2 results in 32 iterations per epoch, and so on.
 
-When training with PyTorch, specify the number of epochs using the maxepochs parameter:
+When training with PyTorch, specify the number of epochs using the max_epochs parameter:
 ```python
-deeplabcut.train_network(config_path, maxepochs=100)
+deeplabcut.train_network(config_path, max_epochs=100)
 ```
 
 **Parameters:**
@@ -369,7 +369,7 @@ maxiters: This sets how many iterations to train. This variable is set in pose_c
 
 pytorch-specific parameters:
 
-maxepochs: this variable is actually set in pose_config.yaml. However, you can overwrite it with this hack.
+max_epochs: this variable is actually set in pose_config.yaml. However, you can overwrite it with this hack.
 specifies the total number of epochs for training, where an epoch is a complete pass through the training dataset. replaces the `maxiters` parameter used in TensorFlow configurations. Default: None
 
 save_epochs: this variable is actually set in pose_config.yaml. However, you can overwrite it with this hack. 
